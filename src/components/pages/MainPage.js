@@ -1,13 +1,14 @@
 import React from 'react';
 import './mainpage.css';
 import { Container, Divider, Dropdown, Grid, Header, Image, List, Menu, Segment } from 'semantic-ui-react';
+import checkEvents from '../../apis/checkEvents';
 
 const MainPage = () => (
   <div>
     <Menu fixed='top' inverted>
       <Container>
         <Menu.Item as='a' header>
-          <Image size='mini' src='/images/logos/logo2.png' style={{ marginRight: '1.5em' }} />
+          <Image size='small' src='/images/logos/logo2.png' style={{ marginRight: '1.5em' }} />
           Erős Algoritmus
         </Menu.Item>
         <Menu.Item as='a'>Főoldal</Menu.Item>
@@ -34,6 +35,7 @@ const MainPage = () => (
 
     <Container text style={{ marginTop: '7em' }}>
       <Header as='h1'>Hétfői kiválasztott meccsek</Header>
+      <checkEvents/>
       <p>This is a basic fixed menu template using fixed size containers.</p>
       <p>
         A text container is used for the main container, which is useful for single column layouts.
@@ -45,7 +47,7 @@ const MainPage = () => (
       <Container textAlign='center'>
         <Grid divided inverted stackable>
           <Grid.Column width={3}>
-            <Header inverted as='h4' content='Group 1' />
+            <Header inverted as='h4' content='Csoport 1' />
             <List link inverted>
               <List.Item as='a'>Link One</List.Item>
               <List.Item as='a'>Link Two</List.Item>
@@ -54,7 +56,7 @@ const MainPage = () => (
             </List>
           </Grid.Column>
           <Grid.Column width={3}>
-            <Header inverted as='h4' content='Group 2' />
+            <Header inverted as='h4' content='Csoport 2' />
             <List link inverted>
               <List.Item as='a'>Link One</List.Item>
               <List.Item as='a'>Link Two</List.Item>
@@ -63,7 +65,7 @@ const MainPage = () => (
             </List>
           </Grid.Column>
           <Grid.Column width={3}>
-            <Header inverted as='h4' content='Group 3' />
+            <Header inverted as='h4' content='Csoport 3' />
             <List link inverted>
               <List.Item as='a'>Link One</List.Item>
               <List.Item as='a'>Link Two</List.Item>
