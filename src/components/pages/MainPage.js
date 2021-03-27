@@ -82,7 +82,7 @@ const MainPage = () => (
         </Grid>
 
         <Divider inverted section />
-        <Image centered size='mini' src='/logo.png' />
+        <Image centered size='medium' src='/images/logos/logo2.png' />
         <List horizontal inverted divided link size='small'>
           <List.Item as='a' href='#'>
             Site Map

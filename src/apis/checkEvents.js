@@ -37,7 +37,7 @@ const checkEvents = async () => {
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {event_selected}
+                { event_selected }
             </Table.Body>
         </Table>    
     )
