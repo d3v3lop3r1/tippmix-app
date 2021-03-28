@@ -1,7 +1,7 @@
 import React from 'react';
 import './mainpage.css';
 import { Container, Divider, Dropdown, Grid, Header, Image, List, Menu, Segment } from 'semantic-ui-react';
-import checkEvents from '../../apis/checkEvents';
+import CheckEvents from '../../apis/CheckEvents';
 
 const MainPage = () => (
   <div>
@@ -35,7 +35,7 @@ const MainPage = () => (
 
     <Container text style={{ marginTop: '7em' }}>
       <Header as='h1'>Hétfői kiválasztott meccsek</Header>
-      <checkEvents/>
+      <CheckEvents/>
       <p>This is a basic fixed menu template using fixed size containers.</p>
       <p>
         A text container is used for the main container, which is useful for single column layouts.
@@ -82,7 +82,6 @@ const MainPage = () => (
         </Grid>
 
         <Divider inverted section />
-        <Image centered size='medium' src='/images/logos/logo2.png' />
         <List horizontal inverted divided link size='small'>
           <List.Item as='a' href='#'>
             Site Map
