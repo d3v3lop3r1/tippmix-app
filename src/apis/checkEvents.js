@@ -7,41 +7,70 @@ class CheckEvents extends Component {
         super(props);
         this.state = {
             Datas,
-            events_selected:''
+            events_selected:'',
+            success: true
         
         };
     }
 
     componentDidMount(){
         (async () => {
-            //var stack = await fs.readFileSync('./response.json',{encoding:'utf8', flag:'r'});
-            // var parsed_stack = JSON.parse(this.state.events_selected);
-            // console.log(event_selected)
-            // console.log(parsed_stack);  
             var events = this.state.Datas.data.events;
             var event_selected = [];
             for ( let id  in events){
                 var eventId = events[id].eventId;
+                var competitionName = events[id].competitionName;
+                var eventDate = events[id].eventDate;
                 var eventName = events[id].eventName;
                 var bettingStatus = events[id].bettingStatus;
+                var marketRealNo = events[id].markets[0].marketRealNo;
                 var hazai = Number(events[id].markets[0].outcomes[0].fixedOdds);
                 var dontetlen = Number(events[id].markets[0].outcomes[1].fixedOdds);
                 var vendeg = Number(events[id].markets[0].outcomes[2].fixedOdds);
-                
-                if ( hazai > 2.37 && hazai < 2.6 && vendeg > 2.37 && vendeg < 2.6 ){
+
+                if ( hazai > 2.4 && hazai < 2.6 && hazai+0.25 <= vendeg ) {
                     event_selected.push(
                         <Table.Row>
+                            <Table.Cell>VENDÉG</Table.Cell>
                             <Table.Cell>{eventId}</Table.Cell>
+                            <Table.Cell>{competitionName}</Table.Cell>
                             <Table.Cell>{eventName}</Table.Cell>
+                            <Table.Cell>{marketRealNo}</Table.Cell>
+                            <Table.Cell>{eventDate}</Table.Cell>                           
                             <Table.Cell>{bettingStatus}</Table.Cell>
                             <Table.Cell>{hazai}</Table.Cell>
                             <Table.Cell>{dontetlen}</Table.Cell>
                             <Table.Cell>{vendeg}</Table.Cell>
-                        </Table.Row>)
-                    console.log(eventId);
+                        </Table.Row>
+                    )
                 }
+                    
+                if ( vendeg > 2.35 && vendeg < 2.6 && vendeg+0.25 <= hazai ) {
+                    event_selected.push(
+                        <Table.Row>
+                            <Table.Cell>HAZAI</Table.Cell>                            
+                            <Table.Cell>{eventId}</Table.Cell>
+                            <Table.Cell>{competitionName}</Table.Cell>
+                            <Table.Cell>{eventName}</Table.Cell>
+                            <Table.Cell>{marketRealNo}</Table.Cell>
+                            <Table.Cell>{eventDate}</Table.Cell>                           
+                            <Table.Cell>{bettingStatus}</Table.Cell>
+                            <Table.Cell>{hazai}</Table.Cell>
+                            <Table.Cell>{dontetlen}</Table.Cell>
+                            <Table.Cell>{vendeg}</Table.Cell>
+                        </Table.Row>
+                    )
+                }
+                
             }
-            this.setState({events_selected : event_selected});
+
+            if (event_selected.length > 0 ){
+                this.setState({
+                    events_selected : event_selected,
+                    success : 1
+                });
+            } 
+
         })();
         
     }
@@ -50,23 +79,29 @@ class CheckEvents extends Component {
 
     render(){
         return(
-            <Table singleLine>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>ID</Table.HeaderCell>
-                        <Table.HeaderCell>Név</Table.HeaderCell>
-                        <Table.HeaderCell>Státusz</Table.HeaderCell>
-                        <Table.HeaderCell>Hazai odds</Table.HeaderCell>
-                        <Table.HeaderCell>Döntetlen odds</Table.HeaderCell>
-                        <Table.HeaderCell>Vendég odds</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                   {this.state.events_selected}                     
+            <div>
+                <Table singleLine>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell>Irány</Table.HeaderCell>
+                            <Table.HeaderCell>ID</Table.HeaderCell>
+                            <Table.HeaderCell>Verseny neve</Table.HeaderCell>
+                            <Table.HeaderCell>Mérkőzés</Table.HeaderCell>
+                            <Table.HeaderCell>Mérkőzés száma</Table.HeaderCell>
+                            <Table.HeaderCell>Dátum</Table.HeaderCell>
+                            <Table.HeaderCell>Státusz</Table.HeaderCell>
+                            <Table.HeaderCell>Hazai</Table.HeaderCell>
+                            <Table.HeaderCell>Döntetlen</Table.HeaderCell>
+                            <Table.HeaderCell>Vendég</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                    {this.state.events_selected}                     
+                    </Table.Body>
+                </Table> 
+                {this.state.success?'':'Nincs számunkra megfelelő meccs :-)'}                     
 
-                    
-                </Table.Body>
-            </Table>    
+            </div>
         )
 
     }

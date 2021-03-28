@@ -33,14 +33,9 @@ const MainPage = () => (
       </Container>
     </Menu>
 
-    <Container text style={{ marginTop: '7em' }}>
+    <Container  style={{ marginTop: '9em' }}>
       <Header as='h1'>Hétfői kiválasztott meccsek</Header>
       <CheckEvents/>
-      <p>This is a basic fixed menu template using fixed size containers.</p>
-      <p>
-        A text container is used for the main container, which is useful for single column layouts.
-      </p>
-
     </Container>
 
     <Segment inverted vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
@@ -74,9 +69,9 @@ const MainPage = () => (
             </List>
           </Grid.Column>
           <Grid.Column width={7}>
-            <Header inverted as='h4' content='Footer Header' />
+            <Header inverted as='h4' content='Célunk' />
             <p>
-              Extra space for a call to action inside the footer that could help re-engage users.
+              Hogy nagyon sok pénzt keressünk.
             </p>
           </Grid.Column>
         </Grid>
