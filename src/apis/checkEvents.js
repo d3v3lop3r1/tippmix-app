@@ -18,7 +18,6 @@ class CheckEvents extends Component {
             var events = this.state.Datas.data.events;
             var event_selected = [];
             for ( let id  in events){
-                var eventId = events[id].eventId;
                 var competitionName = events[id].competitionName;
                 var eventDate = events[id].eventDate;
                 var eventName = events[id].eventName;
@@ -37,8 +36,6 @@ class CheckEvents extends Component {
                     if ( hazai > 2.4 && hazai < 2.6 && hazai+0.25 <= vendeg ) {
                         event_selected.push(
                             <Table.Row>
-                                <Table.Cell>VENDÉG</Table.Cell>
-                                <Table.Cell>{eventId}</Table.Cell>
                                 <Table.Cell>{competitionName}</Table.Cell>
                                 <Table.Cell>{eventName}</Table.Cell>
                                 <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
@@ -54,8 +51,6 @@ class CheckEvents extends Component {
                     if ( vendeg > 2.35 && vendeg < 2.6 && vendeg+0.25 <= hazai ) {
                         event_selected.push(
                             <Table.Row>
-                                <Table.Cell>HAZAI</Table.Cell>                            
-                                <Table.Cell>{eventId}</Table.Cell>
                                 <Table.Cell>{competitionName}</Table.Cell>
                                 <Table.Cell>{eventName}</Table.Cell>
                                 <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
@@ -88,11 +83,9 @@ class CheckEvents extends Component {
     render(){
         return(
             <div>
-                <Table unstackable color = {'grey'} inverted striped size='small' celled>
+                <Table unstackable color = {'blue'} inverted striped size='small' celled>
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell>Irány</Table.HeaderCell>
-                            <Table.HeaderCell>ID</Table.HeaderCell>
                             <Table.HeaderCell>Verseny neve</Table.HeaderCell>
                             <Table.HeaderCell>Mérkőzés</Table.HeaderCell>
                             <Table.HeaderCell>Mérkőzés száma</Table.HeaderCell>
