@@ -23,45 +23,53 @@ class CheckEvents extends Component {
                 var eventDate = events[id].eventDate;
                 var eventName = events[id].eventName;
                 var bettingStatus = events[id].bettingStatus;
-                var marketRealNo = events[id].markets[0].marketRealNo;
-                var hazai = Number(events[id].markets[0].outcomes[0].fixedOdds);
-                var dontetlen = Number(events[id].markets[0].outcomes[1].fixedOdds);
-                var vendeg = Number(events[id].markets[0].outcomes[2].fixedOdds);
-
-                if ( hazai > 2.4 && hazai < 2.6 && hazai+0.25 <= vendeg ) {
-                    event_selected.push(
-                        <Table.Row>
-                            <Table.Cell>VENDÉG</Table.Cell>
-                            <Table.Cell>{eventId}</Table.Cell>
-                            <Table.Cell>{competitionName}</Table.Cell>
-                            <Table.Cell>{eventName}</Table.Cell>
-                            <Table.Cell>{marketRealNo}</Table.Cell>
-                            <Table.Cell>{eventDate}</Table.Cell>                           
-                            <Table.Cell>{bettingStatus}</Table.Cell>
-                            <Table.Cell>{hazai}</Table.Cell>
-                            <Table.Cell>{dontetlen}</Table.Cell>
-                            <Table.Cell>{vendeg}</Table.Cell>
-                        </Table.Row>
-                    )
-                }
+                if (typeof events[id].markets[0] !== 'undefined'){
+                    var marketRealNo = events[id].markets[0].marketRealNo;
+                    if (typeof events[id].markets[0].outcomes[0] !== 'undefined' && typeof events[id].markets[0].outcomes[1] !== 'undefined' && typeof events[id].markets[0].outcomes[2] !== 'undefined'){
+                        var hazai = Number(events[id].markets[0].outcomes[0].fixedOdds);
+                        var dontetlen = Number(events[id].markets[0].outcomes[1].fixedOdds);
+                        var vendeg = Number(events[id].markets[0].outcomes[2].fixedOdds);
+                    } else {
+                        var hazai = 0;
+                        var dontetlen = 0;
+                        var vendeg = 0;
+                    }
+                    if ( hazai > 2.4 && hazai < 2.6 && hazai+0.25 <= vendeg ) {
+                        event_selected.push(
+                            <Table.Row>
+                                <Table.Cell>VENDÉG</Table.Cell>
+                                <Table.Cell>{eventId}</Table.Cell>
+                                <Table.Cell>{competitionName}</Table.Cell>
+                                <Table.Cell>{eventName}</Table.Cell>
+                                <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
+                                <Table.Cell>{eventDate}</Table.Cell>                           
+                                <Table.Cell textAlign='center'>{bettingStatus}</Table.Cell>
+                                <Table.Cell textAlign='center'>{hazai}</Table.Cell>
+                                <Table.Cell textAlign='center'>{dontetlen}</Table.Cell>
+                                <Table.Cell textAlign='center'>{vendeg}</Table.Cell>
+                            </Table.Row>
+                        )
+                    }
+                        
+                    if ( vendeg > 2.35 && vendeg < 2.6 && vendeg+0.25 <= hazai ) {
+                        event_selected.push(
+                            <Table.Row>
+                                <Table.Cell>HAZAI</Table.Cell>                            
+                                <Table.Cell>{eventId}</Table.Cell>
+                                <Table.Cell>{competitionName}</Table.Cell>
+                                <Table.Cell>{eventName}</Table.Cell>
+                                <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
+                                <Table.Cell>{eventDate}</Table.Cell>                           
+                                <Table.Cell textAlign='center'>{bettingStatus}</Table.Cell>
+                                <Table.Cell textAlign='center'>{hazai}</Table.Cell>
+                                <Table.Cell textAlign='center'>{dontetlen}</Table.Cell>
+                                <Table.Cell textAlign='center'>{vendeg}</Table.Cell>
+                            </Table.Row>
+                        )
+                    }
                     
-                if ( vendeg > 2.35 && vendeg < 2.6 && vendeg+0.25 <= hazai ) {
-                    event_selected.push(
-                        <Table.Row>
-                            <Table.Cell>HAZAI</Table.Cell>                            
-                            <Table.Cell>{eventId}</Table.Cell>
-                            <Table.Cell>{competitionName}</Table.Cell>
-                            <Table.Cell>{eventName}</Table.Cell>
-                            <Table.Cell>{marketRealNo}</Table.Cell>
-                            <Table.Cell>{eventDate}</Table.Cell>                           
-                            <Table.Cell>{bettingStatus}</Table.Cell>
-                            <Table.Cell>{hazai}</Table.Cell>
-                            <Table.Cell>{dontetlen}</Table.Cell>
-                            <Table.Cell>{vendeg}</Table.Cell>
-                        </Table.Row>
-                    )
+
                 }
-                
             }
 
             if (event_selected.length > 0 ){
@@ -80,7 +88,7 @@ class CheckEvents extends Component {
     render(){
         return(
             <div>
-                <Table singleLine>
+                <Table unstackable color = {'grey'} inverted striped size='small' celled>
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Irány</Table.HeaderCell>
