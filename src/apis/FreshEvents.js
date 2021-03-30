@@ -21,7 +21,7 @@ class FreshEvents extends Component {
         if (!this.state.success){
             var options = {
                 'method': 'GET',
-                'url': 'http://tippmix-backend.herokuapp.com:9893/getdata',
+                'url': 'https://tippmix-backend.herokuapp.com:9893/getdata',
               
             };
             axios(options).then((response) => {
