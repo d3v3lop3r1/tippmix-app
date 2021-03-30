@@ -23,15 +23,30 @@ class FreshEvents extends Component {
                 method: 'GET',
                 url: 'https://tippmix-backend.herokuapp.com/getdata',
                 headers: {
+                    // 'Accept-Language': 'en-US,en;q=0.9,hu;q=0.8,de;q=0.7',
+                    // 'Access-Control-Allow-Origin':'*',
+                    // 'Content-Type': 'application/json',
+                    // 'Connection': 'keep-alive',
+                    // 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
+                    // 'Origin': 'https://tippmix-frontend.herokuapp.com',
+                    // 'Referer': 'https://tippmix-frontend.herokuapp.com',
+                    // 'Access-Control-Allow-Methods': 'GET, POST, PUT',
+                    // 'Access-Control-Allow-Headers': "Content-Type"        
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                    'Accept-Encoding': 'gzip, deflate, br',
                     'Accept-Language': 'en-US,en;q=0.9,hu;q=0.8,de;q=0.7',
-                    'Access-Control-Allow-Origin':'*',
-                    'Content-Type': 'application/json',
+                    'Cache-Control': 'max-age=0',
                     'Connection': 'keep-alive',
-                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
-                    'Origin': 'https://tippmix-frontend.herokuapp.com',
-                    'Referer': 'https://tippmix-frontend.herokuapp.com',
-                    'Access-Control-Allow-Methods': 'GET, POST, PUT',
-                    'Access-Control-Allow-Headers': "Content-Type"        
+                    'Host': 'tippmix-backend.herokuapp.com',
+                    'If-None-Match': 'W/"e9ea2-2g/pnC17Z28SR2yiTUkASCprb5o"',
+                    'sec-ch-ua': '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
+                    'sec-ch-ua-mobile': '?0',
+                    'Sec-Fetch-Dest': 'document',
+                    'Sec-Fetch-Mode': 'navigate',
+                    'Sec-Fetch-Site': 'none',
+                    'Sec-Fetch-User': '?1',
+                    'Upgrade-Insecure-Requests': '1',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36'
                 },
                       
             };
