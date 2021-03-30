@@ -7,7 +7,6 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
-    "cheerio": "*",
     "eslint": "^7.23.0",
     "eslint-plugin-jest": "^24.3.2",
     "form-data": "^2.3.3",
