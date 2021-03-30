@@ -28,7 +28,8 @@ class FreshEvents extends Component {
                     'Content-Type': 'application/json',
                     'Connection': 'keep-alive',
                     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
-                    'Origin': 'http://localhost:3000',
+                    'Origin': 'https://tippmix-frontend.herokuapp.com',
+                    'Referer': 'https://tippmix-frontend.herokuapp.com',
                     'Access-Control-Allow-Methods': 'GET, POST, PUT',
                     'Access-Control-Allow-Headers': "Content-Type"        
                 },
@@ -56,7 +57,7 @@ class FreshEvents extends Component {
                         }
                         if ( hazai > 2.4 && hazai < 2.6 && hazai+0.25 <= vendeg ) {
                             event_selected.push(
-                                <Table.Row>
+                                <Table.Row key={marketRealNo}>
                                     <Table.Cell>{competitionName}</Table.Cell>
                                     <Table.Cell>{eventName}</Table.Cell>
                                     <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
@@ -71,7 +72,7 @@ class FreshEvents extends Component {
                             
                         if ( vendeg > 2.35 && vendeg < 2.6 && vendeg+0.25 <= hazai ) {
                             event_selected.push(
-                                <Table.Row>
+                                <Table.Row key={marketRealNo}>
                                     <Table.Cell>{competitionName}</Table.Cell>
                                     <Table.Cell>{eventName}</Table.Cell>
                                     <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
