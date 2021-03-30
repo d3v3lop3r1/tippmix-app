@@ -1,13 +1,13 @@
 import React from 'react';
 import './mainpage.css';
 import { Container, Divider, Dropdown, Grid, Header, Image, List, Menu, Segment } from 'semantic-ui-react';
-import CheckEvents from '../../apis/CheckEvents';
+import MainPane from '../../components/panes/MainPane';
 
 const MainPage = () => (
   <div>
     <Menu fixed='top' inverted>
       <Container>
-        <Menu.Item as='a' header>
+        <Menu.Item header>
           <Image size='small' src='/images/logos/logo2.png' style={{ marginRight: '1.5em' }} />
           Erős Algoritmus
         </Menu.Item>
@@ -35,7 +35,7 @@ const MainPage = () => (
 
     <Container  style={{ marginTop: '9em' }}>
       <Header as='h1'>Hétfői kiválasztott meccsek</Header>
-      <CheckEvents/>
+      <MainPane/>
     </Container>
 
     <Segment inverted vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>

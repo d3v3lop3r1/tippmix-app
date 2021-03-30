@@ -7,7 +7,7 @@ class CheckEvents extends Component {
         super(props);
         this.state = {
             Datas,
-            events_selected:'',
+            events_selected:[],
             success: true
         
         };
@@ -17,25 +17,27 @@ class CheckEvents extends Component {
         (async () => {
             var events = this.state.Datas.data.events;
             var event_selected = [];
+            var hazai = 0;
+            var dontetlen = 0;
+            var vendeg = 0;
             for ( let id  in events){
                 var competitionName = events[id].competitionName;
                 var eventDate = events[id].eventDate;
                 var eventName = events[id].eventName;
                 var bettingStatus = events[id].bettingStatus;
-                if (typeof events[id].markets[0] !== 'undefined'){
+                hazai = 0;
+                dontetlen = 0;
+                vendeg = 0;
+                    if (typeof events[id].markets[0] !== 'undefined'){
                     var marketRealNo = events[id].markets[0].marketRealNo;
                     if (typeof events[id].markets[0].outcomes[0] !== 'undefined' && typeof events[id].markets[0].outcomes[1] !== 'undefined' && typeof events[id].markets[0].outcomes[2] !== 'undefined'){
-                        var hazai = Number(events[id].markets[0].outcomes[0].fixedOdds);
-                        var dontetlen = Number(events[id].markets[0].outcomes[1].fixedOdds);
-                        var vendeg = Number(events[id].markets[0].outcomes[2].fixedOdds);
-                    } else {
-                        var hazai = 0;
-                        var dontetlen = 0;
-                        var vendeg = 0;
+                        hazai = Number(events[id].markets[0].outcomes[0].fixedOdds);
+                        dontetlen = Number(events[id].markets[0].outcomes[1].fixedOdds);
+                        vendeg = Number(events[id].markets[0].outcomes[2].fixedOdds);
                     }
                     if ( hazai > 2.4 && hazai < 2.6 && hazai+0.25 <= vendeg ) {
                         event_selected.push(
-                            <Table.Row>
+                            <Table.Row key={marketRealNo}>
                                 <Table.Cell>{competitionName}</Table.Cell>
                                 <Table.Cell>{eventName}</Table.Cell>
                                 <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
@@ -50,7 +52,7 @@ class CheckEvents extends Component {
                         
                     if ( vendeg > 2.35 && vendeg < 2.6 && vendeg+0.25 <= hazai ) {
                         event_selected.push(
-                            <Table.Row>
+                            <Table.Row  key={marketRealNo} >
                                 <Table.Cell>{competitionName}</Table.Cell>
                                 <Table.Cell>{eventName}</Table.Cell>
                                 <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
@@ -67,12 +69,24 @@ class CheckEvents extends Component {
                 }
             }
 
-            if (event_selected.length > 0 ){
-                this.setState({
-                    events_selected : event_selected,
-                    success : 1
-                });
-            } 
+            if (event_selected.length === 0 ){
+                event_selected.push(
+                    <Table.Row>
+                        <Table.Cell>nincs adat</Table.Cell>
+                        <Table.Cell>nincs adat</Table.Cell>
+                        <Table.Cell>nincs adat</Table.Cell>
+                        <Table.Cell>nincs adat</Table.Cell>
+                        <Table.Cell>nincs adat</Table.Cell>
+                        <Table.Cell>nincs adat</Table.Cell>
+                        <Table.Cell>nincs adat</Table.Cell>
+                        <Table.Cell>nincs adat</Table.Cell>
+                    </Table.Row>
+                )
+    } 
+            this.setState({
+                events_selected : event_selected,
+                success : 1
+            });
 
         })();
         
