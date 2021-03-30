@@ -1,5 +1,5 @@
 import React from 'react'
-import { Label, Menu, Tab } from 'semantic-ui-react'
+import {  Menu, Tab } from 'semantic-ui-react'
 import CheckEvents from '../../apis/CheckEvents'
 import FreshEvents from '../../apis/FreshEvents'
 
@@ -11,7 +11,7 @@ const panes = [
   {
     menuItem: (
       <Menu.Item key='fresh'>
-        Friss adatok<Label>15</Label>
+        Friss adatok
       </Menu.Item>
     ),
     render: () => <Tab.Pane><FreshEvents/></Tab.Pane>,
