@@ -20,10 +20,25 @@ class FreshEvents extends Component {
     componentDidMount(){
         if (!this.state.success){
             var options = {
-                'method': 'GET',
-                'url': 'https://tippmix-backend.herokuapp.com/getdata',
-                
-              
+                method: 'GET',
+                url: 'https://tippmix-backend.herokuapp.com/getdata',
+                headers: {
+                    'Accept-Language': 'en-US,en;q=0.9,hu;q=0.8,de;q=0.7',
+                    'Access-Control-Allow-Origin':'*',
+                    'Accept-Language': 'en-US,en;q=0.9,hu;q=0.8,de;q=0.7',
+                    'Content-Type': 'application/json',
+                    'Connection': 'keep-alive',
+                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
+                    'Origin': 'https://tippmix-backend.herokuapp.com',
+                    'sec-ch-ua': '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
+                    'sec-ch-ua-mobile': '?0',
+                    'Sec-Fetch-Dest': 'empty',
+                    'Sec-Fetch-Mode': 'cors',
+                    'Sec-Fetch-Site': 'same-site',
+                    'Access-Control-Allow-Methods': 'GET, POST, PUT',
+                    'Access-Control-Allow-Headers': "Content-Type"        
+                },
+                      
             };
             axios(options).then((response) => {
                 //var eventsData = JSON.parse(response.body);
