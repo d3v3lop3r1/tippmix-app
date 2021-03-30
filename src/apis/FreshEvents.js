@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 //import request from 'request';
 import axios from 'axios';
-import { Table } from 'semantic-ui-react';
+import { Table, Loader, Dimmer } from 'semantic-ui-react';
 //import FormData from 'form-data';
 
 
@@ -11,7 +11,8 @@ class FreshEvents extends Component {
         super(props);
         this.state = {
             eventsSelected:[],
-            success: 0
+            success: 0,
+            loading: 0
         };
         this.componentDidMount = this.componentDidMount.bind(this);
     }
@@ -93,6 +94,7 @@ class FreshEvents extends Component {
                 } 
                 this.setState({
                     success: 1, 
+                    loading:1,
                     eventsSelected: event_selected
                 });
             })
@@ -121,7 +123,7 @@ class FreshEvents extends Component {
                     {this.state.eventsSelected}                     
                     </Table.Body>
                 </Table> 
-                {this.state.success?'':'Nincs számunkra megfelelő meccs :-('}                     
+                {this.state.loading?'':<Dimmer active inverted><Loader inverted>Töltöm az adatokat</Loader></Dimmer>}                     
 
             </div>
         )
