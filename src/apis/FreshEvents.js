@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 //import request from 'request';
 import axios from 'axios';
-import { Table, Loader, Dimmer } from 'semantic-ui-react';
+import { Table, Loader, Dimmer,Message } from 'semantic-ui-react';
 //import FormData from 'form-data';
 
 
@@ -12,7 +12,11 @@ class FreshEvents extends Component {
         this.state = {
             eventsSelected:[],
             success: 0,
-            loading: 0
+            loading: 0,
+            error: {
+                switch: 1,
+                message:''
+            }
         };
         this.componentDidMount = this.componentDidMount.bind(this);
     }
@@ -21,7 +25,12 @@ class FreshEvents extends Component {
         if (!this.state.success){
             var options = {
                 method: 'GET',
-                url: 'https://tippmix-backend.herokuapp.com/getdata'
+                //url: 'http://localhost:5000/getdata',
+                url: 'https://tippmix-backend.herokuapp.com/getdata',
+                header: {
+                    'Origin':'http://localhost:3000',
+                    'Access-Control-Allow-Origin': 'http://localhost:3000'
+                }
             };
             axios(options).then((response) => {
                 //var eventsData = JSON.parse(response.body);
@@ -29,7 +38,8 @@ class FreshEvents extends Component {
                 var event_selected = [];
                 for ( let id  in events){
                     var competitionName = events[id].competitionName;
-                    var eventDate = events[id].eventDate;
+                    var rawDate = events[id].eventDate;
+                    var eventDate = rawDate.replace("T", " ").replace("+", " ");
                     var eventName = events[id].eventName;
                     var bettingStatus = events[id].bettingStatus;
                     var hazai = 0;
@@ -95,7 +105,17 @@ class FreshEvents extends Component {
                     success: 1, 
                     loading:1,
                     eventsSelected: event_selected
+                })
+            }).catch((error)=>{
+                this.setState({
+                    success: 0, 
+                    loading: 1,
+                    error: {
+                        switch:0,
+                        message: error.message
+                    }
                 });
+
             })
             
         }
@@ -108,14 +128,14 @@ class FreshEvents extends Component {
                 <Table unstackable color = {'blue'} inverted striped size='small' celled>
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell>Verseny neve</Table.HeaderCell>
+                            <Table.HeaderCell>Verseny</Table.HeaderCell>
                             <Table.HeaderCell>Mérkőzés</Table.HeaderCell>
-                            <Table.HeaderCell>Mérkőzés száma</Table.HeaderCell>
+                            <Table.HeaderCell>Hiv.szám</Table.HeaderCell>
                             <Table.HeaderCell>Dátum</Table.HeaderCell>
                             <Table.HeaderCell>Státusz</Table.HeaderCell>
-                            <Table.HeaderCell>Hazai</Table.HeaderCell>
-                            <Table.HeaderCell>Döntetlen</Table.HeaderCell>
-                            <Table.HeaderCell>Vendég</Table.HeaderCell>
+                            <Table.HeaderCell>H</Table.HeaderCell>
+                            <Table.HeaderCell>D</Table.HeaderCell>
+                            <Table.HeaderCell>V</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
@@ -123,7 +143,25 @@ class FreshEvents extends Component {
                     </Table.Body>
                 </Table> 
                 {this.state.loading?'':<Dimmer active inverted><Loader inverted>Töltöm az adatokat</Loader></Dimmer>}                     
-
+                {this.state.error.switch?'':(
+                <Message negative>
+                    <Message.Header>
+                        Hiba a letöltésben, kérlek próbáld később
+                    </Message.Header>
+                    <p>{this.state.error.message}</p>
+                    <p>A hiba oka lehet még:</p>
+                    <ul>
+                        <li>
+                            nincs internet kapcsolat
+                        </li>
+                        <li>
+                            a backend szerver leállt
+                        </li>
+                        <li>
+                            vagy csak már ez sem akar dolgozni :-)
+                        </li>
+                    </ul>
+                </Message>)}
             </div>
         )
 
