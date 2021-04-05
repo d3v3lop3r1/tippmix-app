@@ -26,7 +26,7 @@ class FreshEvents extends Component {
             var options = {
                 method: 'GET',
                 //url: 'http://localhost:5000/api/getdata',
-                url: 'https://tippmix-backend.herokuapp.com/api/getdata',
+                url: 'https://tippmix-backend.herokuapp.com/getdata',
                 header: {
                     'Accept-Language': 'en-US,en;q=0.9,hu;q=0.8,de;q=0.7',
                     'Content-Type': 'application/json',
