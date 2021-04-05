@@ -1,6 +1,7 @@
 import Datas from './response.json';
 import React, { Component } from 'react'
 import { Table } from 'semantic-ui-react'
+import axios from 'axios';
 
 class CheckEvents extends Component {
     constructor(props) {
@@ -13,6 +14,18 @@ class CheckEvents extends Component {
         };
     }
 
+    getResult = async (participants)=>{
+        try {
+            const results = await axios.get(`http://localhost:5000/api/getresult/`,{data:{
+                participants: this.participants
+            }});
+            console.log(results);
+            return results;
+        } catch (error) {
+            console.log(error.Body)
+        }
+    };
+
     componentDidMount(){
         (async () => {
             var events = this.state.Datas.data.events;
@@ -24,10 +37,12 @@ class CheckEvents extends Component {
                 var competitionName = events[id].competitionName;
                 var eventDate = events[id].eventDate;
                 var eventName = events[id].eventName;
+                var eventId = events[id].eventId;
                 var bettingStatus = events[id].bettingStatus;
                 hazai = 0;
                 dontetlen = 0;
                 vendeg = 0;
+                var valid = 0;
                     if (typeof events[id].markets[0] !== 'undefined'){
                     var marketRealNo = events[id].markets[0].marketRealNo;
                     if (typeof events[id].markets[0].outcomes[0] !== 'undefined' && typeof events[id].markets[0].outcomes[1] !== 'undefined' && typeof events[id].markets[0].outcomes[2] !== 'undefined'){
@@ -36,8 +51,10 @@ class CheckEvents extends Component {
                         vendeg = Number(events[id].markets[0].outcomes[2].fixedOdds);
                     }
                     if ( hazai > 2.4 && hazai < 2.6 && hazai+0.25 <= vendeg ) {
+                        valid = 1;
                         event_selected.push(
                             <Table.Row key={marketRealNo}>
+                                <Table.Cell>{eventId}</Table.Cell>
                                 <Table.Cell>{competitionName}</Table.Cell>
                                 <Table.Cell>{eventName}</Table.Cell>
                                 <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
@@ -51,8 +68,10 @@ class CheckEvents extends Component {
                     }
                         
                     if ( vendeg > 2.35 && vendeg < 2.6 && vendeg+0.25 <= hazai ) {
+                        valid = 1;
                         event_selected.push(
                             <Table.Row  key={marketRealNo} >
+                                <Table.Cell>{eventId}</Table.Cell>
                                 <Table.Cell>{competitionName}</Table.Cell>
                                 <Table.Cell>{eventName}</Table.Cell>
                                 <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
@@ -65,13 +84,16 @@ class CheckEvents extends Component {
                         )
                     }
                     
-
+                    if (valid){
+                        this.getResult(eventName);
+                    }
                 }
             }
 
             if (event_selected.length === 0 ){
                 event_selected.push(
                     <Table.Row>
+                        <Table.Cell>nincs adat</Table.Cell>
                         <Table.Cell>nincs adat</Table.Cell>
                         <Table.Cell>nincs adat</Table.Cell>
                         <Table.Cell>nincs adat</Table.Cell>
@@ -100,6 +122,7 @@ class CheckEvents extends Component {
                 <Table unstackable color = {'blue'} inverted striped size='small' celled>
                     <Table.Header>
                         <Table.Row>
+                            <Table.HeaderCell>Ev.id</Table.HeaderCell>
                             <Table.HeaderCell>Verseny neve</Table.HeaderCell>
                             <Table.HeaderCell>Mérkőzés</Table.HeaderCell>
                             <Table.HeaderCell>Mérkőzés száma</Table.HeaderCell>
