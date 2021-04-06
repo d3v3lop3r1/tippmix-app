@@ -16,8 +16,8 @@ class CheckEvents extends Component {
 
     getResult = async (participants)=>{
         try {
-            //const results = await axios.get(`http://localhost:5000/api/getresult/${participants}`);
-            const results = await axios.get(`https://tippmix-backend.herokuapp.com/api/getresult/${participants}`);
+            const results = await axios.get(`http://localhost:5000/api/getresult/${participants}`);
+            //const results = await axios.get(`https://tippmix-backend.herokuapp.com/api/getresult/${participants}`);
             console.log(results);
             return results;
         } catch (error) {
@@ -65,9 +65,9 @@ class CheckEvents extends Component {
                         try {
                             const result = await this.getResult(eventName);
     
-                            score1 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1 || null;
-                            score2 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2 || null;
-                            
+                            score1 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1.toString() || " ";
+                            score2 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2.toString() || " ";
+                            var matchStatus = result.data.data[0].sportCompetitions[0].events[0].matchStatus
                             event_selected.push(
                                 <Table.Row key={marketRealNo}>
                                     <Table.Cell>{eventId}</Table.Cell>
@@ -80,6 +80,7 @@ class CheckEvents extends Component {
                                     <Table.Cell textAlign='center'>{dontetlen}</Table.Cell>
                                     <Table.Cell textAlign='center'>{vendeg}</Table.Cell>
                                     <Table.Cell textAlign='center'>{score1}:{score2}</Table.Cell>
+                                    <Table.Cell textAlign='center'>{matchStatus}</Table.Cell>
                                 </Table.Row>
                             )
 
@@ -96,6 +97,7 @@ class CheckEvents extends Component {
             if (event_selected.length === 0 ){
                 event_selected.push(
                     <Table.Row>
+                        <Table.Cell>nincs adat</Table.Cell>
                         <Table.Cell>nincs adat</Table.Cell>
                         <Table.Cell>nincs adat</Table.Cell>
                         <Table.Cell>nincs adat</Table.Cell>
@@ -136,6 +138,7 @@ class CheckEvents extends Component {
                             <Table.HeaderCell>Döntetlen</Table.HeaderCell>
                             <Table.HeaderCell>Vendég</Table.HeaderCell>
                             <Table.HeaderCell>Eredmény</Table.HeaderCell>
+                            <Table.HeaderCell>matchStatus</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
