@@ -1,9 +1,6 @@
-//import fs from 'fs';
 import React, { Component } from 'react';
-//import request from 'request';
 import axios from 'axios';
 import { Table, Loader, Dimmer,Message } from 'semantic-ui-react';
-//import FormData from 'form-data';
 
 
 class FreshEvents extends Component {
@@ -25,16 +22,13 @@ class FreshEvents extends Component {
         if (!this.state.success){
             var options = {
                 method: 'GET',
-                //url: 'http://localhost:5000/api/getdata',
-                url: 'https://tippmix-backend.herokuapp.com/getdata',
+                url: 'https://tippmix-backend.herokuapp.com/api/getdata',
                 header: {
                     'Accept-Language': 'en-US,en;q=0.9,hu;q=0.8,de;q=0.7',
                     'Content-Type': 'application/json',
                     'Connection': 'keep-alive',
                     'Host':'api.tippmix.hu',
                     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
-                    // 'Origin': 'http://localhost:5000',
-                    // 'Referer': 'http://localhost:5000',
                     'Origin': 'https://tippmix-frontend.herokuapp.com',
                     'Referer': 'https://tippmix-frontend.herokuapp.com'
                     }
