@@ -16,7 +16,8 @@ class CheckEvents extends Component {
 
     getResult = async (participants)=>{
         try {
-            const results = await axios.get(`http://localhost:5000/api/getresult/${participants}`);
+            const GETRESULT_URL = process.env.GETRESULT_URL || "http://localhost:5000/api/getresult/";
+            const results = await axios.get(GETRESULT_URL + participants);
             //const results = await axios.get(`https://tippmix-backend.herokuapp.com/api/getresult/${participants}`);
             console.log(results);
             return results;
