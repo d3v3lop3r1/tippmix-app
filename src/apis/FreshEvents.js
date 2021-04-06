@@ -19,10 +19,12 @@ class FreshEvents extends Component {
     }
 
     componentDidMount(){
+        //const GETDATA_URL = process.env.GETDATA_URL || "http://localhost:5000/api/getdata";
+        const GETDATA_URL = "https://tippmix-backend.herokuapp.com/api/getdata";
         if (!this.state.success){
             var options = {
                 method: 'GET',
-                url: 'https://tippmix-backend.herokuapp.com/api/getdata',
+                url: GETDATA_URL,
                 header: {
                     'Accept-Language': 'en-US,en;q=0.9,hu;q=0.8,de;q=0.7',
                     'Content-Type': 'application/json',
