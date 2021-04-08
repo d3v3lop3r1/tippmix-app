@@ -1,6 +1,6 @@
 import Datas from './response.json';
 import React, { Component } from 'react'
-import { Table } from 'semantic-ui-react'
+import { Table, Dimmer, Loader, Message } from 'semantic-ui-react'
 import axios from 'axios';
 
 class CheckEvents extends Component {
@@ -9,8 +9,12 @@ class CheckEvents extends Component {
         this.state = {
             Datas,
             events_selected:[],
-            success: true
-        
+            success: true,
+            loading: 0,
+            error: {
+                switch: 1,
+                message:''
+            }
         };
     }
 
@@ -83,10 +87,22 @@ class CheckEvents extends Component {
                                     <Table.Cell textAlign='center'>{matchStatus}</Table.Cell>
                                 </Table.Row>
                             )
-
-                            
+                            this.setState({
+                                success: 1, 
+                                loading:1,
+                                eventsSelected: event_selected
+                            })
+                                        
                         } catch (error) {
-                            console.log('Hiba az eredmény lekérésében');
+                            this.setState({
+                                success: 0, 
+                                loading: 1,
+                                error: {
+                                    switch:0,
+                                    message: error.message
+                                }
+                            });
+                                        console.log('Hiba az eredmény lekérésében');
                         }    
                     }
                         
@@ -145,6 +161,14 @@ class CheckEvents extends Component {
                     {this.state.events_selected}                     
                     </Table.Body>
                 </Table> 
+                {this.state.loading?'':<Dimmer active inverted><Loader inverted>Töltöm az adatokat</Loader></Dimmer>}                     
+                {this.state.error.switch?'':(
+                <Message negative>
+                    <Message.Header>
+                        Hiba a letöltésben, kérlek próbáld később
+                    </Message.Header>
+                    <p>{this.state.error.message}</p>
+                </Message>)}
                 {this.state.success?'':'Nincs számunkra megfelelő meccs :-)'}                     
 
             </div>
