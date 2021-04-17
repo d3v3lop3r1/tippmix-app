@@ -1,12 +1,17 @@
 import React from 'react'
 import {  Menu, Tab } from 'semantic-ui-react'
-import CheckEvents from '../../apis/CheckEvents'
+import CheckMondayEvents from '../../apis/CheckMondayEvents'
+import CheckThursdayEvents from '../../apis/CheckThursdayEvents'
 import FreshEvents from '../../apis/FreshEvents'
 
 const panes = [
   {
-    menuItem: { key: 'monday', icon: 'user', content: 'Hétfői alap' },
-    render: () => <Tab.Pane><CheckEvents/></Tab.Pane>,
+    menuItem: { key: 'monday', icon: 'user', content: 'Hétfő-Kedd alap' },
+    render: () => <Tab.Pane><CheckMondayEvents/></Tab.Pane>,
+  },
+  {
+    menuItem: { key: 'thursday', icon: 'user', content: 'Csütörtök-Péntek alap' },
+    render: () => <Tab.Pane><CheckThursdayEvents/></Tab.Pane>,
   },
   {
     menuItem: (

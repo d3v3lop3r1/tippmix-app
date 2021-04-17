@@ -8,7 +8,7 @@ const MainPage = () => (
   <div>
     <Navbar/>
     <Container  style={{ marginTop: '9em' }}>
-      <Header as='h1'>Hétfői kiválasztott meccsek</Header>
+      <Header as='h1'>Meccsadatok</Header>
       <MainPane/>
     </Container>
 

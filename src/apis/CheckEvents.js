@@ -20,7 +20,8 @@ class CheckEvents extends Component {
 
     getResult = async (participants)=>{
         try {
-            const GETRESULT_URL = "https://tippmix-backend.herokuapp.com/api/getresult/";
+            //const GETRESULT_URL = "https://tippmix-backend.herokuapp.com/api/getresult/";
+            const GETRESULT_URL = "http://localhost:5000/api/getresult/";
             const results = await axios.get(GETRESULT_URL + participants);
             console.log(results);
             return results;
@@ -36,6 +37,11 @@ class CheckEvents extends Component {
             var hazai = 0;
             var dontetlen = 0;
             var vendeg = 0;
+            var valid = 0;
+            var score1 = "nincs";
+            var score2 = "nincs";
+            var matchStatus = "nincs";
+
             for ( let id  in events){
                 var competitionName = events[id].competitionName;
                 var eventDate = events[id].eventDate;
@@ -45,9 +51,10 @@ class CheckEvents extends Component {
                 hazai = 0;
                 dontetlen = 0;
                 vendeg = 0;
-                var valid = 0;
-                var score1 = "";
-                var score2 = "";
+                valid = 0;
+                score1 = "nincs";
+                score2 = "nincs";
+                matchStatus = "nincs";
 
                 if (typeof events[id].markets[0] !== 'undefined'){
                     var marketRealNo = events[id].markets[0].marketRealNo;
@@ -67,11 +74,18 @@ class CheckEvents extends Component {
                     if(valid){
 
                         try {
-                            const result = await this.getResult(eventName);
-    
-                            score1 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1.toString() || " ";
-                            score2 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2.toString() || " ";
-                            var matchStatus = result.data.data[0].sportCompetitions[0].events[0].matchStatus
+                            const eventNameURL = encodeURI(eventName);
+                            const result = await this.getResult(eventNameURL);
+                            if(result.data.data.length !== 0 ){
+                                score1 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1.toString() || " ";
+                                score2 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2.toString() || " ";
+                                matchStatus = result.data.data[0].sportCompetitions[0].events[0].matchStatus
+
+                            } else {
+                                score1 = "nincs";
+                                score2 = "nincs";
+                                matchStatus = "nincs";
+                            }
                             event_selected.push(
                                 <Table.Row key={marketRealNo}>
                                     <Table.Cell>{eventId}</Table.Cell>

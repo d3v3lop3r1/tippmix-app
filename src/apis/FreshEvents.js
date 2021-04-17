@@ -19,7 +19,8 @@ class FreshEvents extends Component {
     }
 
     componentDidMount(){
-        const GETDATA_URL = "https://tippmix-backend.herokuapp.com/api/getdata";
+        // const GETDATA_URL = "https://tippmix-backend.herokuapp.com/api/getdata";
+        const GETDATA_URL = "http://localhost:5000/api/getdata";
         if (!this.state.success){
             var options = {
                 method: 'GET',
@@ -37,64 +38,57 @@ class FreshEvents extends Component {
             axios(options).then((response) => {
                 //var eventsData = JSON.parse(response.body);
                 var events = response.data.data.events;
-                var event_selected = [];
+                var eventSelected = [];
+               
                 for ( let id  in events){
-                    var competitionName = events[id].competitionName;
-                    var rawDate = events[id].eventDate;
-                    var eventDate = rawDate.replace("T", " ").replace("+", " ");
-                    var eventName = events[id].eventName;
-                    var eventId = events[id].eventId;
-                    var bettingStatus = events[id].bettingStatus;
-                    var hazai = 0;
-                    var dontetlen = 0;
-                    var vendeg = 0;
-        
                     if (typeof events[id].markets[0] !== 'undefined'){
+
+                        var competitionName = events[id].competitionName;
+                        var rawDate = events[id].eventDate;
+                        var eventDate = rawDate.replace("T", " ").replace("+", " ");
+                        var eventName = events[id].eventName;
+                        var eventId = events[id].eventId;
+                        var bettingStatus = events[id].bettingStatus;
                         var marketRealNo = events[id].markets[0].marketRealNo;
+                        var hazai = 0;
+                        var dontetlen = 0;
+                        var vendeg = 0;
+                        var valid = 0;
                         if (typeof events[id].markets[0].outcomes[0] !== 'undefined' && typeof events[id].markets[0].outcomes[1] !== 'undefined' && typeof events[id].markets[0].outcomes[2] !== 'undefined'){
                             hazai = Number(events[id].markets[0].outcomes[0].fixedOdds);
                             dontetlen = Number(events[id].markets[0].outcomes[1].fixedOdds);
                             vendeg = Number(events[id].markets[0].outcomes[2].fixedOdds);
                         }
                         if ( hazai > 2.4 && hazai < 2.6 && hazai+0.25 <= vendeg ) {
-                            event_selected.push(
-                                <Table.Row key={marketRealNo}>
-                                    <Table.Cell>{eventId}</Table.Cell>
-                                    <Table.Cell>{competitionName}</Table.Cell>
-                                    <Table.Cell>{eventName}</Table.Cell>
-                                    <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
-                                    <Table.Cell>{eventDate}</Table.Cell>                           
-                                    <Table.Cell textAlign='center'>{bettingStatus}</Table.Cell>
-                                    <Table.Cell textAlign='center'>{hazai}</Table.Cell>
-                                    <Table.Cell textAlign='center'>{dontetlen}</Table.Cell>
-                                    <Table.Cell textAlign='center'>{vendeg}</Table.Cell>
-                                </Table.Row>
-                            )
-                        }
-                            
-                        if ( vendeg > 2.35 && vendeg < 2.6 && vendeg+0.25 <= hazai ) {
-                            event_selected.push(
-                                <Table.Row key={marketRealNo}>
-                                    <Table.Cell>{eventId}</Table.Cell>
-                                    <Table.Cell>{competitionName}</Table.Cell>
-                                    <Table.Cell>{eventName}</Table.Cell>
-                                    <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
-                                    <Table.Cell>{eventDate}</Table.Cell>                           
-                                    <Table.Cell textAlign='center'>{bettingStatus}</Table.Cell>
-                                    <Table.Cell textAlign='center'>{hazai}</Table.Cell>
-                                    <Table.Cell textAlign='center'>{dontetlen}</Table.Cell>
-                                    <Table.Cell textAlign='center'>{vendeg}</Table.Cell>
-                                </Table.Row>
-                            )
+                            valid = 1;
                         }
                         
-        
+                        if ( vendeg > 2.35 && vendeg < 2.6 && vendeg+0.25 <= hazai ) {
+                            valid = 1;
+                        }
+                        
+                        
+                        eventSelected.push(
+                            <Table.Row key={marketRealNo}>
+                                <Table.Cell>{eventId}</Table.Cell>
+                                <Table.Cell>{competitionName}</Table.Cell>
+                                <Table.Cell>{eventName}</Table.Cell>
+                                <Table.Cell textAlign='center'>{marketRealNo}</Table.Cell>
+                                <Table.Cell>{eventDate}</Table.Cell>                           
+                                <Table.Cell textAlign='center'>{bettingStatus}</Table.Cell>
+                                <Table.Cell textAlign='center'>{hazai}</Table.Cell>
+                                <Table.Cell textAlign='center'>{dontetlen}</Table.Cell>
+                                <Table.Cell textAlign='center'>{vendeg}</Table.Cell>
+                                <Table.Cell textAlign='center'>{valid?"x":""}</Table.Cell>
+                            </Table.Row>
+                        )
                     }
                 }
     
-                if (event_selected.length === 0 ){
-                    event_selected.push(
+                if (eventSelected.length === 0 ){
+                    eventSelected.push(
                         <Table.Row>
+                            <Table.Cell>nincs adat</Table.Cell>
                             <Table.Cell>nincs adat</Table.Cell>
                             <Table.Cell>nincs adat</Table.Cell>
                             <Table.Cell>nincs adat</Table.Cell>
@@ -110,7 +104,7 @@ class FreshEvents extends Component {
                 this.setState({
                     success: 1, 
                     loading:1,
-                    eventsSelected: event_selected
+                    eventsSelected: eventSelected
                 })
             }).catch((error)=>{
                 this.setState({
@@ -143,6 +137,7 @@ class FreshEvents extends Component {
                             <Table.HeaderCell>H</Table.HeaderCell>
                             <Table.HeaderCell>D</Table.HeaderCell>
                             <Table.HeaderCell>V</Table.HeaderCell>
+                            <Table.HeaderCell>Fontos</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
