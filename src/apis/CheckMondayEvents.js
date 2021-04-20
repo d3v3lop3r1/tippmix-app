@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Dimmer, Loader, Message } from 'semantic-ui-react'
+import { Table, Dimmer, Loader, Message, Progress } from 'semantic-ui-react'
 import axios from 'axios';
 
 class CheckEvents extends Component {
@@ -10,6 +10,8 @@ class CheckEvents extends Component {
             events_selected:[],
             success: true,
             loading: 1,
+            progTotal:0,
+            progValue:0,
             error: {
                 switch: 1,
                 message:''
@@ -19,8 +21,8 @@ class CheckEvents extends Component {
 
     getResult = async (participants)=>{
         try {
-            //const GETRESULT_URL = "https://tippmix-backend.herokuapp.com/api/getresult/";
-            const GETRESULT_URL = "http://localhost:5000/api/getresult/";
+            const GETRESULT_URL = "https://tippmix-backend.herokuapp.com/api/getresult/";
+            //const GETRESULT_URL = "http://localhost:5000/api/getresult/";
             const results = await axios.get(GETRESULT_URL + participants);
             console.log(results);
             return results;
@@ -30,8 +32,8 @@ class CheckEvents extends Component {
     };
 
     getMondayData = async ()=>{
-        //const GETMONDAYDATA_URL = "https://tippmix-backend.herokuapp.com/api/getmondaydata";
-        const GETMONDAYDATA_URL = "http://localhost:5000/api/getmondaydata";
+        const GETMONDAYDATA_URL = "https://tippmix-backend.herokuapp.com/api/getmondaydata";
+        //const GETMONDAYDATA_URL = "http://localhost:5000/api/getmondaydata";
         var options = {
             method: 'GET',
             url: GETMONDAYDATA_URL,
@@ -57,6 +59,8 @@ class CheckEvents extends Component {
         (async () => {
            const res = await this.getMondayData()
             var events = res.data;
+            debugger;
+            this.setState({ progTotal: events.length });
             var hazai = 0;
             var dontetlen = 0;
             var vendeg = 0;
@@ -77,14 +81,21 @@ class CheckEvents extends Component {
                 score1 = "nincs";
                 score2 = "nincs";
                 matchStatus = "nincs";
+                this.setState({ progValue: id });
 
                 try {
                     const eventNameURL = encodeURI(eventName);
                     const result = await this.getResult(eventNameURL);
                     if(result.data.data.length !== 0 ){
-                        score1 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1.toString() || " ";
-                        score2 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2.toString() || " ";
-                        matchStatus = result.data.data[0].sportCompetitions[0].events[0].matchStatus
+                        if (typeof(result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1) !== undefined ){
+                            score1 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1.toString();
+                        }
+                        if (typeof(result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2) !== undefined ){
+                            score2 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2.toString();
+                        }
+                        if (typeof(result.data.data[0].sportCompetitions[0].events[0].matchStatus) !== undefined ){
+                            matchStatus = result.data.data[0].sportCompetitions[0].events[0].matchStatus
+                        }
 
                     } else {
                         score1 = "nincs";
@@ -118,6 +129,7 @@ class CheckEvents extends Component {
                     });
                                 console.log('Hiba az eredmény lekérésében');
                 }    
+
             }
                     
                 
@@ -154,6 +166,7 @@ class CheckEvents extends Component {
     render(){
         return(
             <div>
+                <Progress value={this.state.progValue} total={this.state.progTotal} progress='ratio' />                   
                 <Table unstackable color = {'blue'} inverted striped size='small' celled>
                     <Table.Header>
                         <Table.Row>
@@ -174,7 +187,7 @@ class CheckEvents extends Component {
                     {this.state.events_selected}                     
                     </Table.Body>
                 </Table> 
-                {this.state.loading?(<Dimmer active inverted><Loader inverted>Töltöm az adatokat</Loader></Dimmer>):''}                     
+                {this.state.loading?(<Dimmer active inverted><Loader inverted>Töltöm az adatokat</Loader></Dimmer>):''}  
                 {this.state.error.switch?"":(
                 <Message negative>
                     <Message.Header>

@@ -19,8 +19,8 @@ class CheckEvents extends Component {
 
     getResult = async (participants)=>{
         try {
-            //const GETRESULT_URL = "https://tippmix-backend.herokuapp.com/api/getresult/";
-            const GETRESULT_URL = "http://localhost:5000/api/getresult/";
+            const GETRESULT_URL = "https://tippmix-backend.herokuapp.com/api/getresult/";
+            //const GETRESULT_URL = "http://localhost:5000/api/getresult/";
             const results = await axios.get(GETRESULT_URL + participants);
             console.log(results);
             return results;
@@ -30,8 +30,8 @@ class CheckEvents extends Component {
     };
 
     getThursdayData = async ()=>{
-        //const GETTHURSDAY_URL = "https://tippmix-backend.herokuapp.com/api/getthursdaydata";
-        const GETTHURSDAY_URL = "http://localhost:5000/api/getthursdaydata";
+        const GETTHURSDAY_URL = "https://tippmix-backend.herokuapp.com/api/getthursdaydata";
+        //const GETTHURSDAY_URL = "http://localhost:5000/api/getthursdaydata";
         var options = {
             method: 'GET',
             url: GETTHURSDAY_URL,
@@ -84,9 +84,15 @@ class CheckEvents extends Component {
                     const eventNameURL = encodeURI(eventName);
                     const result = await this.getResult(eventNameURL);
                     if(result.data.data.length !== 0 ){
-                        score1 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1.toString() || " ";
-                        score2 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2.toString() || " ";
-                        matchStatus = result.data.data[0].sportCompetitions[0].events[0].matchStatus
+                        if (typeof(result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1) !== undefined ){
+                            score1 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1.toString();
+                        }
+                        if (typeof(result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2) !== undefined ){
+                            score2 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2.toString();
+                        }
+                        if (typeof(result.data.data[0].sportCompetitions[0].events[0].matchStatus) !== undefined ){
+                            matchStatus = result.data.data[0].sportCompetitions[0].events[0].matchStatus
+                        }
 
                     } else {
                         score1 = "nincs";
