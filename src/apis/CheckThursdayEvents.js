@@ -65,6 +65,7 @@ class CheckEvents extends Component {
             var score1 = "nincs";
             var score2 = "nincs";
             var matchStatus = "nincs";
+            var rowColor = "";
 
             for ( let id  in events){
                 var competitionName = events[id].competitionName;
@@ -99,8 +100,14 @@ class CheckEvents extends Component {
                         score2 = "nincs";
                         matchStatus = "nincs";
                     }
+                    if (matchStatus === "ended"){
+                        rowColor = "negative";
+                    } else {
+                        rowColor = "";
+                    }
+
                     eventSelected.push(
-                        <Table.Row key={marketRealNo}>
+                        <Table.Row key={marketRealNo} content={rowColor}>
                             <Table.Cell>{eventId}</Table.Cell>
                             <Table.Cell>{competitionName}</Table.Cell>
                             <Table.Cell>{eventName}</Table.Cell>

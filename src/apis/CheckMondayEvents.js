@@ -32,7 +32,7 @@ class CheckEvents extends Component {
     };
 
     getMondayData = async ()=>{
-        const GETMONDAYDATA_URL = "https://tippmix-backend.herokuapp.com/api/getmondaydata";
+        const GETMONDAYDATA_URL = "https://tippmix-backend.herokuapp.com/api/getnewmondaydata";
         //const GETMONDAYDATA_URL = "http://localhost:5000/api/getmondaydata";
         var options = {
             method: 'GET',
@@ -59,7 +59,6 @@ class CheckEvents extends Component {
         (async () => {
            const res = await this.getMondayData()
             var events = res.data;
-            debugger;
             this.setState({ progTotal: events.length });
             var hazai = 0;
             var dontetlen = 0;
@@ -68,7 +67,9 @@ class CheckEvents extends Component {
             var score2 = "nincs";
             var eventSelected = [];
             var matchStatus = "nincs";
+            var rowColor;
             for ( let id  in events){
+                rowColor =""
                 var competitionName = events[id].competitionName;
                 var eventDate = events[id].eventDate;
                 var eventName = events[id].eventName;
@@ -87,23 +88,27 @@ class CheckEvents extends Component {
                     const eventNameURL = encodeURI(eventName);
                     const result = await this.getResult(eventNameURL);
                     if(result.data.data.length !== 0 ){
-                        if (typeof(result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1) !== undefined ){
-                            score1 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1.toString();
+                        if(typeof(result.data.data[0].sportCompetitions[0].events[0].scoreResults) !== undefined ){
+                            if (typeof(result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1) !== undefined ){
+                                score1 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant1.toString();
+                            }
+                            if (typeof(result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2) !== undefined ){
+                                score2 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2.toString();
+                            }
+                            if (typeof(result.data.data[0].sportCompetitions[0].events[0].matchStatus) !== undefined ){
+                                matchStatus = result.data.data[0].sportCompetitions[0].events[0].matchStatus
+                            }
                         }
-                        if (typeof(result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2) !== undefined ){
-                            score2 =  result.data.data[0].sportCompetitions[0].events[0].scoreResults[0].scoreParticipant2.toString();
-                        }
-                        if (typeof(result.data.data[0].sportCompetitions[0].events[0].matchStatus) !== undefined ){
-                            matchStatus = result.data.data[0].sportCompetitions[0].events[0].matchStatus
-                        }
-
                     } else {
                         score1 = "nincs";
                         score2 = "nincs";
                         matchStatus = "nincs";
                     }
+                    if (matchStatus === "ended"){
+                        rowColor = "negative";
+                    } 
                     eventSelected.push(
-                        <Table.Row key={marketRealNo}>
+                        <Table.Row key={marketRealNo} >
                             <Table.Cell>{eventId}</Table.Cell>
                             <Table.Cell>{competitionName}</Table.Cell>
                             <Table.Cell>{eventName}</Table.Cell>
@@ -127,7 +132,7 @@ class CheckEvents extends Component {
                             message: error.message
                         }
                     });
-                                console.log('Hiba az eredmény lekérésében');
+                    console.log('Hiba az eredmény lekérésében');
                 }    
 
             }
@@ -167,7 +172,7 @@ class CheckEvents extends Component {
         return(
             <div>
                 <Progress value={this.state.progValue} total={this.state.progTotal} progress='ratio' />                   
-                <Table unstackable color = {'blue'} inverted striped size='small' celled>
+                <Table unstackable color = {'blue'} inverted size='small' celled>
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Ev.id</Table.HeaderCell>
@@ -191,7 +196,7 @@ class CheckEvents extends Component {
                 {this.state.error.switch?"":(
                 <Message negative>
                     <Message.Header>
-                        Hiba a letöltésben, kérlek próbáld később
+                        Kisebb hiba a letöltésben, kérlek próbáld később, vagy szólj a Colinak
                     </Message.Header>
                     <p>{this.state.error.message}</p>
                 </Message>)}
