@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Table, Dimmer, Loader, Message } from 'semantic-ui-react'
 import axios from 'axios';
 
-class CheckEvents extends Component {
+class CheckThursdayEvents extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,7 +30,7 @@ class CheckEvents extends Component {
     };
 
     getThursdayData = async ()=>{
-        const GETTHURSDAY_URL = "https://tippmix-backend.herokuapp.com/api/getthursdaydata";
+        const GETTHURSDAY_URL = "https://tippmix-backend.herokuapp.com/api/getnewthursdaydata";
         //const GETTHURSDAY_URL = "http://localhost:5000/api/getthursdaydata";
         var options = {
             method: 'GET',
@@ -205,7 +205,7 @@ class CheckEvents extends Component {
     }
 
 }
-export default CheckEvents;
+export default CheckThursdayEvents;
 
 
 
